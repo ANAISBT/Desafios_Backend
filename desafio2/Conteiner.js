@@ -1,5 +1,5 @@
 const fs= require('fs').promises;
-
+//promises es una propiedad de fs que nos permite usar async await
 class Conteiner {
     constructor(path) {
         this.path = path;

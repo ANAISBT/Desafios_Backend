@@ -1,5 +1,5 @@
 const fs=require('fs');
-
+//sin promises 
 class Contenedor{
     constructor(file){
         this.file = file;

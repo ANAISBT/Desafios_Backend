@@ -38,6 +38,6 @@ async function main() {
         console.log('Se eliminaron todos los productos');
     });
 }
-
+//se ejecuta la funcion main
 main();
 
