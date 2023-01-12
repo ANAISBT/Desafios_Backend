@@ -8,7 +8,7 @@ const productosRouter = new Router();
  
 const ContenedorArchivo=require('../contenedores/ContenedorArchivo')
 //instancia la clase contenedor
-const ProductoService=new ContenedorArchivo("./AQUI VA LA RUTA DEL ARCHIVO")
+const ProductoService=new ContenedorArchivo("http://localhost:8080/api/productos")
 
 //Función de Error
 
@@ -39,32 +39,38 @@ const soloAdmins=(req,res,next)=>{
 //Endpoints
 productosRouter.get('/',async(req,res)=>{
 //logica
-    console.log("Esta es una petición simple");
+
+ProductoService.listarTodos(res);
 
 })
 
 productosRouter.get('/:id',async(req,res)=>{
     //logica
+    const { id } = req.params;
+
+    ProductoService.listar(res,id);
     
-    res.json()
     })
 
 productosRouter.post('/',soloAdmins,async(req,res)=>{
         //logica
-        
-    res.json()
+
+    ProductoService.guardar(res,req.body);
 })
 
 productosRouter.put('/:id',soloAdmins,async(req,res)=>{
     //logica
     
-    res.json()
+    const { id } = req.params;
+
+    ProductoService.actualizar(id,res,req.body);
     })
 
 productosRouter.delete('/:id',soloAdmins,async(req,res)=>{
     //logica
-    
-    res.json()
+    const { id } = req.params;
+
+    ProductoService.borrar(id,res);
     })
 
 module.exports= productosRouter
