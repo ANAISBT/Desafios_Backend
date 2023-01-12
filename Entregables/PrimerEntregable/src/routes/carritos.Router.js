@@ -6,23 +6,9 @@ const carritosRouter = new Router();
 
 //importtamos la clase Container
  
-const ContenedorArchivo=require('../contenedores/ContenedorArchivo')
+const ContenedorArchivoCarrito=require('../contenedores/ContenedorArchivoCarrito')
 //instancia la clase contenedor
-const CarritoService=new ContenedorArchivo("./AQUI VA LA RUTA DEL ARCHIVO")
-
-//Función de Error
-
-const crearErrorNoEsAdmin =(ruta,metodo)=>{
-    const error={
-        error:-1,
-    }
-    if(ruta && metodo){
-        error.description=`ruta ${ruta} metodo ${metodo} no autorizada`
-    }else{
-        error.description='NO AUTORIZADO'
-    }
-    return error
-}
+const CarritoService=new ContenedorArchivoCarrito("./AQUI VA LA RUTA DEL ARCHIVO")
 
 
 //Endpoints
@@ -30,31 +16,29 @@ const crearErrorNoEsAdmin =(ruta,metodo)=>{
 carritosRouter.post('/',async(req,res)=>{
     //logica
     
-res.json()
+    CarritoService.crearCarrito(res,req.body);
+
 })
 
 carritosRouter.post('/:id/productos',async(req,res)=>{
+    
 //logica
-
-res.json()
+const {id}=req.params;
+CarritoService.agregarProducto(res,id);
 })
 
 carritosRouter.get('/:id/productos',async(req,res)=>{
     //logica
-    
-    res.json()
-    })
+    const {id}=req.params;
 
-carritosRouter.delete('/:id',async(req,res)=>{
-    //logica
-    
-    res.json()
-})
+CarritoService.listarCarrito(res,id);
+    })
 
 carritosRouter.delete('/:id/productos/:id_prod',async(req,res)=>{
         //logica
-        
-    res.json()
+        const {id,id_prod}=req.params;
+        CarritoService.borrarProducto(res,id,id_prod);
+    
 })
 module.exports= carritosRouter
 
