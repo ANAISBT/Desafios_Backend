@@ -25,7 +25,8 @@ class ContenedorArchivo{
         try{
             const data=await fs.readFile('./db/dbProductos.json','utf-8');
             const productos=JSON.parse(data);
-            res.send(productos);
+             res.send(productos);
+            //res.sendFile("/DISCO D/CODERHOUSE_BACKEND/Desafios/Entregables/PrimerEntregable/public/views/productos.html")
         }catch(error){
             console.log(error);
         }
