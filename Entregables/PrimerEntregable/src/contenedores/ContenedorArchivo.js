@@ -8,7 +8,7 @@ class ContenedorArchivo{
 
     async listar(res,id){
         try{
-            const data=await fs.readFile('./db/dbProductos.json','utf-8');
+            const data=await fs.readFile(this.ruta,'utf-8');
             const productos=JSON.parse(data);
             const producto = productos.find((producto) => producto.id == id);
             if (producto) {
@@ -23,7 +23,7 @@ class ContenedorArchivo{
 
     async listarTodos(res){
         try{
-            const data=await fs.readFile('./db/dbProductos.json','utf-8');
+            const data=await fs.readFile(this.ruta,'utf-8');
             const productos=JSON.parse(data);
              res.send(productos);
             //res.sendFile("/DISCO D/CODERHOUSE_BACKEND/Desafios/Entregables/PrimerEntregable/public/views/productos.html")
@@ -35,7 +35,7 @@ class ContenedorArchivo{
     async guardar (res,body){
     const { nombre,timestamp,descripcion,codigo,fotoUrl,precio,stock } = body;
     try{
-        const data=await fs.readFile('./db/dbProductos.json','utf-8');
+        const data=await fs.readFile(this.ruta,'utf-8');
         const productos=JSON.parse(data);
         const id = productos.length + 1;
     const producto = {
@@ -59,7 +59,7 @@ class ContenedorArchivo{
     async actualizar(id,res,body){
         const { nombre,timestamp,descripcion,codigo,fotoUrl,precio,stock } = body;
         try{
-            const data=await fs.readFile('./db/dbProductos.json','utf-8');
+            const data=await fs.readFile(this.ruta,'utf-8');
             const productos=JSON.parse(data);
             const producto = productos.find((producto) => producto.id == id);
             if (producto) {
@@ -83,7 +83,7 @@ class ContenedorArchivo{
 
     async borrar(id,res){
         try{
-            const data=await fs.readFile('./db/dbProductos.json','utf-8');
+            const data=await fs.readFile(this.ruta,'utf-8');
             const productos=JSON.parse(data);
             const producto = productos.find((producto) => producto.id == id);
             if (producto) {

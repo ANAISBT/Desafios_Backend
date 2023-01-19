@@ -8,7 +8,7 @@ const productosRouter = new Router();
  
 const ContenedorArchivo=require('../contenedores/ContenedorArchivo')
 //instancia la clase contenedor
-const ProductoService=new ContenedorArchivo("http://localhost:8080/api/productos")
+const ProductoService=new ContenedorArchivo('./db/dbProductos.json')
 
 //Función de Error
 

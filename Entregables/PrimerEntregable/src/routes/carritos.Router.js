@@ -8,7 +8,7 @@ const carritosRouter = new Router();
  
 const ContenedorArchivoCarrito=require('../contenedores/ContenedorArchivoCarrito')
 //instancia la clase contenedor
-const CarritoService=new ContenedorArchivoCarrito("./AQUI VA LA RUTA DEL ARCHIVO")
+const CarritoService=new ContenedorArchivoCarrito('./db/dbCarritos.json')
 
 
 //Endpoints
