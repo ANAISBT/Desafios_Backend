@@ -10,7 +10,7 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
-const port= 8080;
+const port= 8000;
 
 const server= app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto ${port}`);
