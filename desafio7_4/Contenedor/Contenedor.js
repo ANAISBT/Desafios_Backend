@@ -24,7 +24,7 @@ class Contenedor {
 
     async guardar(elem) {
         try{
-       return this.knex(this.table).insert(elem);
+       return this.knex(this.tabla).insert(elem);
         }catch(err){
             res.send(`Ocurrio un error en la db: ${err.message}`)
         }
@@ -32,7 +32,7 @@ class Contenedor {
 
     async actualizar(elem, id) {
         try{
-        const dbId=await this.knex(this.table).where("id",id).update(elem);
+        const dbId=await this.knex(this.tabla).where("id",id).update(elem);
         return dbId;}
         catch(err){
             res.send(`Ocurrio un error en la db: ${err.message}`)
@@ -41,7 +41,7 @@ class Contenedor {
 
     async borrar(id) {
         try{
-        return this.knex(this.table).where("id",id).del();}
+        return this.knex(this.tabla).where("id",id).del();}
         catch(err){
             res.send(`Ocurrio un error en la db: ${err.message}`)
         }
@@ -49,4 +49,4 @@ class Contenedor {
 
 }
 
-module.exports={Contenedor}
+module.exports=Contenedor
