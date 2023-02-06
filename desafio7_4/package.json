@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon server.js",
-    "migrate":"node script/CrearTablas.js"
+    "start": "nodemon server.js",
+    "migrate": "node script/CrearTablas.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "hbs": "^4.2.0",
     "http": "^0.0.1-security",
     "knex": "^2.4.2",
     "moment": "^2.29.4",

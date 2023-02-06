@@ -1,0 +1,35 @@
+﻿Comando del Servidor
+mongod
+Comando del Cliente
+mongo
+Creamos la base de datos ‘ecommerce’
+use ecommerce
+Insertamos 10 documentos con valores distintos a las colecciones mensajes y productos.
+db.productos.insertMany([{nombre:”Calculadora”,precio:150.00,url:”cnfqf”},{nombre:”Lapiz”,precio:200.00,url:”dqrqrqr”},{nombre:”Dados”,precio:300.00,url:”ffqrqr”},{nombre:”Borrador”,precio:400.00,url:”rqrqrq”},{nombre:”Pincel”,precio:500.00,url:”gwqrrqr”},{nombre:”Cargador”,precio:600.00,url:”faqrqrqrq”},{nombre:”Tajador”,precio:700.00,url:”qrqrqrqr”},{nombre:”Tijera”,precio:800.00,url:”gwgrqdf”},{nombre:”Goma”,precio:900.00,url:”oigwgowopg”},{nombre:”Lana”,precio:950.00,url:”qmmqprmqrq”}])
+
+
+db.mensajes.insertMany([{autor:”Anais”,texto:”Hola”,fecha:ISODate()},{autor:”Leily”,texto:”Como estás”,fecha:ISODate()},{autor:”Gian”,texto:”Que hacen”,fecha:ISODate()},{autor:”Tany”,texto:”Nada”,fecha:ISODate()},{autor:”Edu”,texto:”Go”,fecha:ISODate()},{autor:”Jean”,texto:”Nd”,fecha:ISODate()},{autor:”Alanys”,texto:”Tengo tarea”,fecha:ISODate()},{autor:”May”,texto:”Yo no”,fecha:ISODate()},{autor:”Mela”,texto:”Mucha”,fecha:ISODate()},{autor:”Hiro”,texto:”Bye”,fecha:ISODate()}])
+Listar todos los documentos en cada colección.
+db.mensajes.find()
+db.productos.find()
+Mostrar la cantidad de documentos almacenados en cada una de ellas
+db.productos.count()
+db.mensajes.count()
+Realizar un CRUD sobre la colección de productos:
+        Agregar un producto más en la colección de productos
+        db.productos.insertOne({nombre:”Plastilina”,precio:350,url:”hbnioni”})
+        Realizar una consulta por nombre de producto específico:
+Listar los productos con precio menor a 100 pesos.
+db.productos.find({precio:{$lt: 100}})
+Listar los productos con precio entre los 100 a 300 pesos.
+db.productos.find({precio:{$in: [100,300]}})
+Listar los productos con precio mayor a 300 pesos.
+db.productos.find({precio:{$gt: 300}})
+Hacer una actualización sobre todos los productos, agregando el campo stock a todos ellos con un valor de 100.
+db.productos.update({},{$set:{"stock": 100}},{upsert:false,multi:true})
+Cambiar el stock a cero de los productos con precios mayores a 400 pesos. 
+db.productos.update({"precio":{$gt:400}},{$set:{"stock": 0}},{upsert:false,multi:true})
+Borrar los productos con precio menor a 100 pesos 
+db.productos.deleteMany({precio:{$lt:100}})
+Crear un usuario 'pepe' clave: 'asd456' que sólo pueda leer la base de datos ecommerce. Verificar que pepe no pueda cambiar la información.
+db.createUser({"user":"pepe","pwd":"asd456","roles":[{"role":"read",db:"ecommerce"}]})
