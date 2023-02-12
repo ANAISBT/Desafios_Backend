@@ -24,6 +24,10 @@ const ProductoDaoMongo=new ContenedorMongoDb('productos', {
         stock:{ type: Number, required: true }
 });
 
+const ContenedorFirebase=require('../contenedores/ContenedorFirebase.js');
+
+const ProductoDaoFirebase=new ContenedorFirebase('productos');
+
 //Función de Error
 
 const crearErrorNoEsAdmin =(ruta,metodo)=>{
@@ -55,7 +59,8 @@ productosRouter.get('/',async(req,res)=>{
 //logica
 
  //ProductoService.listarTodos(res);
- ProductoDaoMongo.listarAll(res);
+//  ProductoDaoMongo.listarAll(res);
+ProductoDaoFirebase.listarAll(res);
 })
 
 productosRouter.get('/:id',async(req,res)=>{
