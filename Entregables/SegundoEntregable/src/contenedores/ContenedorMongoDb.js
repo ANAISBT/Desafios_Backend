@@ -42,7 +42,8 @@ class ContenedorMongoDb {
     async guardar(res,nuevoElem) {
         try{
             console.log("Insertó un elementos");
-            const result= this.collection.create(nuevoElem);
+            
+            const result= await this.collection.insertOne(nuevoElem);
             return res.status(200).send(result);
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
@@ -52,7 +53,7 @@ class ContenedorMongoDb {
     async actualizar(res,id,nuevoElem) {
         try{
             console.log("Actualizó los datos");
-            const result= this.model.updateOne({id:id},nuevoElem);
+            const result= await this.collection.findByIdAndUpdate({id:id},nuevoElem,{new:true});
             return res.status(200).send(result);
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
@@ -62,7 +63,7 @@ class ContenedorMongoDb {
     async borrar(res,id) {
         try{
             console.log("Eliminó los datos");
-            const result= this.model.deleteOne({id:id})
+            const result= await this.collection.findByIdAndDelete({id:id})
             return res.status(200).send(result);
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})

@@ -58,16 +58,16 @@ const soloAdmins=(req,res,next)=>{
 productosRouter.get('/',async(req,res)=>{
 //logica
 
- //ProductoService.listarTodos(res);
-//  ProductoDaoMongo.listarAll(res);
-ProductoDaoFirebase.listarAll(res);
+//  ProductoService.listarTodos(res);
+  ProductoDaoMongo.listarAll(res);
+// ProductoDaoFirebase.listarAll(res);
 })
 
 productosRouter.get('/:id',async(req,res)=>{
     //logica
     const { id } = req.params;
 
-    ProductoService.listar(res,id);
+    // ProductoService.listar(res,id);
     ProductoDaoMongo.listar(res,id);
     })
 
@@ -83,7 +83,7 @@ productosRouter.put('/:id',soloAdmins,async(req,res)=>{
     
     const { id } = req.params;
 
-    ProductoService.actualizar(id,res,req.body);
+    // ProductoService.actualizar(id,res,req.body);
     ProductoDaoMongo.actualizar(res,id,req.body);
     })
 
@@ -96,7 +96,7 @@ productosRouter.delete('/:id',soloAdmins,async(req,res)=>{
     //logica
     const { id } = req.params;
 
-    ProductoService.borrar(id,res);
+    // ProductoService.borrar(id,res);
     ProductoDaoMongo.borrar(res,id);
     })
 
