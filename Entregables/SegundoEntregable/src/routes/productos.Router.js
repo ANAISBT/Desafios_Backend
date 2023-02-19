@@ -90,7 +90,7 @@ productosRouter.put('/:id',soloAdmins,async(req,res)=>{
     productosRouter.put('/',soloAdmins,async(req,res)=>{
         //logica
         
-        ProductoDaoMongo.crear(res);        })   
+        ProductoDaoMongo.crear(res,req.body);        })   
     
 productosRouter.delete('/:id',soloAdmins,async(req,res)=>{
     //logica

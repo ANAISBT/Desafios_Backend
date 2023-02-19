@@ -7,7 +7,10 @@ const config = require("../config.js");
 class ContenedorMongoDb {
 
     constructor(nombreColeccion, esquema) {
-        this.coleccion = mongoose.model(nombreColeccion, esquema)
+        // this.nombreColeccion=nombreColeccion;
+        // this.esquema=esquema;
+        // const collection = mongoose.model(this.nombreColeccion, this.esquema)
+        this.collection=mongoose.model(nombreColeccion, esquema)
     }
 
     async crear(res,data){
@@ -43,7 +46,7 @@ class ContenedorMongoDb {
         try{
             console.log("Insertó un elementos");
             
-            const result= await this.collection.insertOne(nuevoElem);
+            const result= await this.collection.create(nuevoElem);
             return res.status(200).send(result);
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
@@ -53,7 +56,7 @@ class ContenedorMongoDb {
     async actualizar(res,id,nuevoElem) {
         try{
             console.log("Actualizó los datos");
-            const result= await this.collection.findByIdAndUpdate({id:id},nuevoElem,{new:true});
+            const result= await this.collection.findOneAndUpdate({id:id},nuevoElem,{new:true});
             return res.status(200).send(result);
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
@@ -63,7 +66,7 @@ class ContenedorMongoDb {
     async borrar(res,id) {
         try{
             console.log("Eliminó los datos");
-            const result= await this.collection.findByIdAndDelete({id:id})
+            const result= await this.collection.findOneAndDelete({id:id})
             return res.status(200).send(result);
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
