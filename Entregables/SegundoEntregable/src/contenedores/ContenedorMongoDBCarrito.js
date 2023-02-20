@@ -4,7 +4,7 @@ const config = require("../config.js");
 
  mongoose.connect(config.mongodb.cnxStr, config.mongodb.options)
 
-class ContenedorMongoDb {
+class ContenedorMongoDbCarrito {
 
     constructor(nombreColeccion, esquema) {
         // this.nombreColeccion=nombreColeccion;
@@ -13,7 +13,7 @@ class ContenedorMongoDb {
         this.collection=mongoose.model(nombreColeccion, esquema)
     }
 
-    async crear(res,data){
+    async crearColeccion(res,data){
         try{
             console.log("Crear de elementos");
             const result=await this.collection.create(data);
@@ -22,25 +22,16 @@ class ContenedorMongoDb {
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
         }
     }
-    async listar(res,id) {
+    async listarProductosDeUnCarrito(res,id) {
         try{
-            console.log("Lectura de elementos");
-            const result=await this.collection.find({id:id});
+            console.log("Lectura de productos de un carrito");
+            const result=await this.collection.find({id:id},{productos:1});
             return res.status(200).send(result);
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
         }
     }
 
-    async listarAll(res) {
-        try{
-            console.log("Lectura de elementos");
-            const result=await this.collection.find({});
-            return res.status(200).send(result);
-        }catch(err){
-            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
-        }
-    }
 
     async guardar(res,id,nuevoElem) {
         try{
@@ -49,6 +40,15 @@ class ContenedorMongoDb {
             return res.status(200).send(result);
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
+        }
+    }
+
+    async agregarProducto(res,id,nuevoElem){
+        try {
+            const result=await this.collection.find({id:id},{$push: {productos:nuevoElem}},{new:true})
+            return res.status(200).send(result);
+        } catch (err) {
+            res.status(500).send({err:`Ocurrio un error : ${err.message}`}) 
         }
     }
 
@@ -62,16 +62,15 @@ class ContenedorMongoDb {
         }
     }
 
-    async borrar(res,id,id_prod) {
-        try{
-            console.log("Eliminó los datos");
-            const result=await this.collection.find({id:id});findOneAndDelete({id_prod:id_prod})
+    async borrarProducto(res,id,id_prod) {
+        try {
+            const result=await this.collection.find({id:id},{$pull: {productos:{id:id_prod}}},{new:true})
             return res.status(200).send(result);
-        }catch(err){
-            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
+        } catch (err) {
+            res.status(500).send({err:`Ocurrio un error : ${err.message}`}) 
         }
     }
 
 }
 
-module.exports= ContenedorMongoDb
+module.exports= ContenedorMongoDbCarrito

@@ -11,7 +11,6 @@ const ContenedorArchivo=require('../contenedores/ContenedorArchivo')
 const ProductoService=new ContenedorArchivo('./db/dbProductos.json')
 
 const ContenedorMongoDb=require('../contenedores/ContenedorMongoDb.js');
-//const { productosDao } = require('../daos');
 
 const ProductoDaoMongo=new ContenedorMongoDb('productos', {
     id:{ type: Number, required: true },
@@ -59,8 +58,8 @@ productosRouter.get('/',async(req,res)=>{
 //logica
 
 //  ProductoService.listarTodos(res);
-  ProductoDaoMongo.listarAll(res);
-// ProductoDaoFirebase.listarAll(res);
+//   ProductoDaoMongo.listarAll(res);
+ProductoDaoFirebase.listarAll(res);
 })
 
 productosRouter.get('/:id',async(req,res)=>{
@@ -68,14 +67,16 @@ productosRouter.get('/:id',async(req,res)=>{
     const { id } = req.params;
 
     // ProductoService.listar(res,id);
-    ProductoDaoMongo.listar(res,id);
+    // ProductoDaoMongo.listar(res,id);
+    ProductoDaoFirebase.listar(res,id);
     })
 
 productosRouter.post('/',soloAdmins,async(req,res)=>{
         //logica
 
     // ProductoService.guardar(res,req.body);
-    ProductoDaoMongo.guardar(res,req.body);
+    // ProductoDaoMongo.guardar(res,req.body);
+    ProductoDaoFirebase.guardar(res,req.body)
 })
 
 productosRouter.put('/:id',soloAdmins,async(req,res)=>{
@@ -84,20 +85,24 @@ productosRouter.put('/:id',soloAdmins,async(req,res)=>{
     const { id } = req.params;
 
     // ProductoService.actualizar(id,res,req.body);
-    ProductoDaoMongo.actualizar(res,id,req.body);
+    // ProductoDaoMongo.actualizar(res,id,req.body);
+    ProductoDaoFirebase.actualizar(res,id,req.body);
     })
 
     productosRouter.put('/',soloAdmins,async(req,res)=>{
         //logica
         
-        ProductoDaoMongo.crear(res,req.body);        })   
+        // ProductoDaoMongo.crear(res,req.body);      
+    
+    })   
     
 productosRouter.delete('/:id',soloAdmins,async(req,res)=>{
     //logica
     const { id } = req.params;
 
     // ProductoService.borrar(id,res);
-    ProductoDaoMongo.borrar(res,id);
+    // ProductoDaoMongo.borrar(res,id);
+    ProductoDaoFirebase.borrar(res,id);
     })
 
 module.exports= productosRouter

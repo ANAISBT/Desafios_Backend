@@ -12,18 +12,30 @@ const db = admin.firestore();
 class ContenedorFirebase {
 
     constructor(nombreColeccion) {
-        this.coleccion = db.collection(nombreColeccion)
+        this.colecction = db.collection(nombreColeccion)
     }
 
 
-    async listar(id) {
+    async listar(res,id) {
+        try{
+            const Producto=await this.collection.doc(id).get();
+            res.send({ success: true, data: Producto.data() });
+        }catch(err){
+            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
+        }
 
     }
 
     async listarAll(res) {
         try{
-            allProducts=await this.collection.get();
-        res.send(allProducts);
+            const productos=await this.collection.get();
+            const result = [];
+            // Iterar sobre los documentos y agregar los datos a un array
+            productos.forEach((doc) => {
+                result.push(doc.data());
+            });
+            // Devolver un objeto JSON con el array de datos
+            res.send({ success: true, data: result });
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
         }
@@ -33,7 +45,7 @@ class ContenedorFirebase {
     async guardar(res,nuevoElem) {
         try{
             const producto=await this.collection.add(nuevoElem);
-        res.send(producto);
+            res.send({ success: true, data: producto.id });
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
         }
@@ -42,7 +54,7 @@ class ContenedorFirebase {
     async actualizar(res,id,nuevoElem) {
          try{
             const producto=await this.collection.doc(id).update(nuevoElem);
-        res.send(producto);
+        res.send({ success: true, data: producto });
         }catch(err){
             res.status(500).send({err:`Ocurrio un error : ${err.message}`})
         }
@@ -57,12 +69,6 @@ class ContenedorFirebase {
         }
     }
 
-    async borrarAll() {
-
-    }
-
-    async desconectar() {
-    }
 }
 
 module.exports=ContenedorFirebase
