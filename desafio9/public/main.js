@@ -1,10 +1,14 @@
+// const { normalize, schema, denormalize } = require("normalizr");
+
+
 const socket = io.connect();
 const render1 =(data) => {
   const html = data.map((element, index) => {
     return `<div>
-    <strong style="color:blue">${element.author} </strong> [
+    <strong style="color:blue">${element.author.id} </strong> [
     <em style="color:red">${element.fecha}</em> ]:
     <em style="color:green">${element.text}</em>
+    <em><img src="${element.url}"></em>
     </div>`;
   });
   document.getElementById("messages").innerHTML = html;
@@ -36,8 +40,16 @@ var fecha = d + "/" + m + "/" + y+ " " + h + ":" + min + ":" + s;
 
 function addMessage(e) {
     const mensaje = {
-        author: document.getElementById('username').value,
-        text: document.getElementById('texto').value,
+      
+        author: {
+        id:document.getElementById('username').value,
+        name:document.getElementById('name').value,
+        lastname:document.getElementById('lastname').value,
+        age:document.getElementById('age').value,
+        nickname:document.getElementById('nickname').value,
+        url:document.getElementById('url').value
+      },
+      text: document.getElementById('texto').value,
         fecha: fecha
     };
     socket.emit('new-message', mensaje);

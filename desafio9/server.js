@@ -1,4 +1,5 @@
 const faker = require('faker');
+const { normalize, schema, denormalize } = require("normalizr");
 
 const Contenedor=require("./Contenedor/Contenedor.js");
 
@@ -27,7 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/productos-test", (req, res) => {
-  res.render("tablas",{productos: productos});
+  res.render("tablas",{productos: productosFakers});
 });
 
 function generarProducto() {
@@ -42,17 +43,34 @@ function generarProducto() {
 const messages = [
 ];
 
-const productos = [
+const productosFakers = [
 ];
 
+const productos=[]
+
 for (let i = 0; i < 5; i++) {
-  const producto = generarProducto();
-  productos.push(producto);
+  const productoFaker = generarProducto();
+  productosFakers.push(productoFaker);
 }
 
 app.get("/api/productos-test", (req, res) => {
   res.render("tabla",{productos: productos});
 });
+
+const authorSchema=new schema.Entity('author');
+
+const textSchema= new schema.Entity('text');
+
+const messageSchema= new schema.Entity('mesage',{
+  author:authorSchema,
+  text:textSchema
+},{idAttribute:'Id_Message'});
+
+ const util=require('util');
+
+ function print(objeto){
+     console.log(util.inspect(objeto, false,12,true)); }
+
 
 io.on("connection", (socket) => {
   console.log("Un cliente se ha conectado");
@@ -60,9 +78,17 @@ io.on("connection", (socket) => {
   socket.emit("productos", productos);
   
   socket.on("new-message", (data) => {
-    messages.push(data);
+    console.log(data);
+    const dataNormalizr=normalize(data,messageSchema);
+    print(dataNormalizr);
+    const denormalizedData = denormalize(dataNormalizr.result, messageSchema, dataNormalizr.entities);
+    print(denormalizedData);
+    messages.push(denormalizedData);
+    // messages.push(data);
     io.sockets.emit("messages", messages);
     Contenedor1.guardar(data);
+    
+     
   });
 
   socket.on("new-product", (data) => {

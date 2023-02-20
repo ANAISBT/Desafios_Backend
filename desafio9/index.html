@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">    
+    <link href="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js">
     <title>Mi aplicación con sockets</title>
     <script src="/socket.io/socket.io.js"></script>
     <script src="main.js"></script>
@@ -44,6 +45,11 @@
 
     <form onsubmit="return addMessage(this)">
         <input type="text" id="username" placeholder="anais@gmail.com" >
+        <input type="text" id="name" placeholder="anais" >
+        <input type="text" id="lastname" placeholder="Bustamante" >
+        <input type="number" id="age" placeholder="20" >
+        <input type="text" id="nickname" placeholder="Mana" >
+        <input type="url" id="avatar" placeholder="https://cd3.iconfinder.com" >
         <input type="text" id="texto" placeholder="Ingrese un mensaje">
         <input type="submit" value="Enviar">
     </form>
