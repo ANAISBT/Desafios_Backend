@@ -8,7 +8,7 @@ const render1 =(data) => {
     <strong style="color:blue">${element.author.id} </strong> [
     <em style="color:red">${element.fecha}</em> ]:
     <em style="color:green">${element.text}</em>
-    <em><img src="${element.url}"></em>
+    <em><img src="${element.author.url}"></em>
     </div>`;
   });
   document.getElementById("messages").innerHTML = html;
@@ -40,7 +40,6 @@ var fecha = d + "/" + m + "/" + y+ " " + h + ":" + min + ":" + s;
 
 function addMessage(e) {
     const mensaje = {
-      
         author: {
         id:document.getElementById('username').value,
         name:document.getElementById('name').value,
@@ -49,7 +48,8 @@ function addMessage(e) {
         nickname:document.getElementById('nickname').value,
         url:document.getElementById('url').value
       },
-      text: document.getElementById('texto').value,
+        id:'mensajes',
+        text: document.getElementById('texto').value,
         fecha: fecha
     };
     socket.emit('new-message', mensaje);
