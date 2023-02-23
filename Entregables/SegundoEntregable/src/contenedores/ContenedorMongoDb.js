@@ -1,77 +1,64 @@
-const mongoose = require("mongoose");
+const mongoose = require ("mongoose");
+const config=require("../config.js");
 
-const config = require("../config.js");
+mongoose.set('strictQuery', true);
 
- mongoose.connect(config.mongodb.cnxStr, config.mongodb.options)
+mongoose.connect(config.mongodb.cnxStr, config.mongodb.options);
 
-class ContenedorMongoDb {
-
-    constructor(nombreColeccion, esquema) {
-        // this.nombreColeccion=nombreColeccion;
-        // this.esquema=esquema;
-        // const collection = mongoose.model(this.nombreColeccion, this.esquema)
-        this.collection=mongoose.model(nombreColeccion, esquema)
+class ContenedorMongo{
+    constructor(nombreCollection,esquema){
+        this.collection=mongoose.model(nombreCollection,esquema);
+    }
+// ----------------------PRODUCTOS----------------------------------
+    async listar(id){
+        console.log('Lectura del producto según id');
+        const resultado=this.collection.findById(mongoose.Types.ObjectId(id));
+        return resultado;
     }
 
-    async crear(res,data){
-        try{
-            console.log("Crear de elementos");
-            const result=await this.collection.create(data);
-            return res.status(200).send(result);
-        }catch(err){
-            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
-        }
-    }
-    async listar(res,id) {
-        try{
-            console.log("Lectura de elementos");
-            const result=await this.collection.find({id:id});
-            return res.status(200).send(result);
-        }catch(err){
-            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
-        }
+    async listarTodos(){
+        console.log('Lectura de los productos');
+        const resultado=this.collection.find({});
+        return resultado;
     }
 
-    async listarAll(res) {
-        try{
-            console.log("Lectura de elementos");
-            const result=await this.collection.find({});
-            return res.status(200).send(result);
-        }catch(err){
-            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
-        }
+    async guardar(nuevoElem){
+        console.log('Inserción');
+        const resultado=this.collection.create(nuevoElem);
+        return resultado;
     }
 
-    async guardar(res,id,nuevoElem) {
-        try{
-            console.log("Insertó un elementos");
-            const result=await this.collection.find({id:id}).create(nuevoElem);
-            return res.status(200).send(result);
-        }catch(err){
-            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
-        }
+    async actualizarProducto(id,nuevaInfo){
+        console.log('Actualizar Producto');
+        const result= await this.collection.findOneAndUpdate({id:mongoose.Types.ObjectId(id)},nuevaInfo,{new:true});
+        return result;
     }
 
-    async actualizar(res,id,nuevoElem) {
-        try{
-            console.log("Actualizó los datos");
-            const result= await this.collection.findOneAndUpdate({id:id},nuevoElem,{new:true});
-            return res.status(200).send(result);
-        }catch(err){
-            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
-        }
+    async borrarProducto(id){
+        console.log('Eliminar Producto');
+        const result=await this.collection.findOneAndDelete(mongoose.Types.ObjectId(id))
+        return result;
     }
 
-    async borrar(res,id,id_prod) {
-        try{
-            console.log("Eliminó los datos");
-            const result=await this.collection.find({id:id});findOneAndDelete({id_prod:id_prod})
-            return res.status(200).send(result);
-        }catch(err){
-            res.status(500).send({err:`Ocurrio un error : ${err.message}`})
-        }
+    // ----------------------CARRITO----------------------------------
+
+    async agregarProductoCarrito(id,nuevoElem){
+        console.log('Lectura del producto según el id del carrito');
+        const resultado=await this.collection.updateOne({ _id: mongoose.Types.ObjectId(id) },{ $push: { productos: nuevoElem }});
+        return resultado;
     }
 
+    async mostrarProductosCarrito(id){
+        const resultado=await this.collection.findById(mongoose.Types.ObjectId(id),{productos:1})
+        return resultado;
+    }
+
+    async eliminarProductoCarrito(id,id_prod){
+        const resultado=await this.collection.updateOne(
+            { _id: mongoose.Types.ObjectId(id) },
+            { $pull: { productos: { _id: mongoose.Types.ObjectId(id_prod)}}});
+        return resultado;
+    }
 }
 
-module.exports= ContenedorMongoDb
+module.exports=ContenedorMongo
