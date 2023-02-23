@@ -21,6 +21,11 @@ const productosSquema=new mongoose.Schema({
 
 const ProductoDAOMongo=new ContenedorMongo('productos',productosSquema);
 
+//Productos Dao Firebase
+
+const ContenedorFirebase=require('../contenedores/ContenedorFirebase.js');
+const ProductoDaoFirebase=new ContenedorFirebase('productos');
+
 //Función de Error
 
 const crearErrorNoEsAdmin = (ruta, metodo) => {
@@ -50,8 +55,11 @@ productosRouter.get("/", async (req, res) => {
 // LLamada a las difrentes funciones de archivos, mongo y firebase
 //   ProductoService.listarTodos(res);
 try {
-    const productos= await ProductoDAOMongo.listarTodos();
-    res.status(200).json(productos);
+    // const productos= await ProductoDAOMongo.listarTodos();
+    // res.status(200).json(productos);
+    const productos=ProductoDaoFirebase.listarTodos();
+    res.send({ success: true, data: productos});
+    
 } catch (err) {
     res.status(500).send({err:`Ocurrio un error : ${err.message}`})
 }
@@ -63,7 +71,8 @@ productosRouter.get("/:id", async (req, res) => {
 // LLamada a las difrentes funciones de archivos, mongo y firebase
 //   ProductoService.listar(res, id);
 try {
-    const producto=await ProductoDAOMongo.listar(id);
+    // const producto=await ProductoDAOMongo.listar(id);
+    const producto=await ProductoDaoFirebase.listar(id);
     if(producto){
         res.status(200).json(producto);
     }else{
@@ -78,8 +87,9 @@ productosRouter.post("/", soloAdmins, async (req, res) => {
 // LLamada a las difrentes funciones de archivos, mongo y firebase
 //   ProductoService.guardar(res, req.body);
 try {
-    const producto=await ProductoDAOMongo.guardar(req.body);
-    res.status(200).json(producto.id);
+    // const producto=await ProductoDAOMongo.guardar(req.body);
+  const productoId=await ProductoDaoFirebase.guardar(req.body);
+    res.status(200).json(productoId);
 } catch (err) {
     res.status(500).send({err:`Ocurrio un error : ${err.message}`})
 }
@@ -90,8 +100,10 @@ productosRouter.put("/:id", soloAdmins, async (req, res) => {
 // LLamada a las difrentes funciones de archivos, mongo y firebase
 //   ProductoService.actualizar(id, res, req.body);
     try {
-        const producto=await ProductoDAOMongo.actualizarProducto(id,req.body);
-        res.status(200).send(producto);
+        // const producto=await ProductoDAOMongo.actualizarProducto(id,req.body);
+        // res.status(200).send(producto);
+        await ProductoDaoFirebase.actualizarProducto(id,req.body);
+        res.send('Actualizado')
     } catch (err) {
         res.status(500).send({err:`Ocurrio un error : ${err.message}`})
     }
@@ -103,8 +115,10 @@ productosRouter.delete("/:id", soloAdmins, async (req, res) => {
 // LLamada a las difrentes funciones de archivos, mongo y firebase
 //   ProductoService.borrar(id, res);
 try {
-    const producto=await ProductoDAOMongo.borrarProducto(id);
-    res.status(200).send(ProductoDAOMongo.listarTodos());
+    // const producto=await ProductoDAOMongo.borrarProducto(id);
+    // res.status(200).send(producto);
+    await ProductoDaoFirebase.borrarProducto(id);
+    res.send('Borrado')
 } catch (err) {
     res.status(500).send({err:`Ocurrio un error : ${err.message}`})
 }
