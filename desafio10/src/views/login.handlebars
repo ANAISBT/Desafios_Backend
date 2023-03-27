@@ -1,0 +1,12 @@
+<div class="jumbotron mx-auto p-2 mt-4" style="width: 90%; ">
+<h1 style="color:blue">Login de Usuario</h1>
+<br>
+{{#if error}}
+    <p class="text-danger badge ">{{error}}</p>
+{{/if}}
+<form  action="/api/auth/login" method="post">
+    <label class="form-label badge" style="font-size:2rem">Ingrese su Nombre:</label>
+    <input class="form-control mt-4" type="text" placeholder="Ingresa tu nombre" name="name"/>
+    <button class="btn btn-success mt-4" type="submit">Enviar</button>
+</form>
+</div>

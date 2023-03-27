@@ -1,0 +1,16 @@
+{{> navbar}}
+<div class="mx-5 my-2 ">
+    <div class="alert alert-success flex-row d-flex justify-content-between">
+    <h2>Bienvenido {{username}}</h2>
+    <button class="btn btn-warning" onclick="location.href='/api/auth/logout'">Desloguear</button>
+    </div>
+    <div class="jumbotron">
+    {{>productsForm}}
+    <div class="my-4" id="productsContainer"></div>
+    <h2 class="text-primary" style="color:blue;">Centro de mensajes</h2>
+    <input class="form-control my-2" type="text" id="chatMsg" placeholder="Ingresa un mensaje"/>
+    <button class="btn btn-success mb-2" id="sendMsg">Enviar</button>
+    <div id="chatContainer" class="my-2"></div>
+    </div>
+</div>
+{{> importScripts}}
